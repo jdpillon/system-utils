@@ -6,6 +6,8 @@
 
 for user in `./userList.sh`
 do
-  cat $user/.pulse
+  ls /home/$user/.pulse
+  rm -RfI /home/$user/.pulse
+  rm -RfI /home/$user/.pulse-cookie 
 
 done
