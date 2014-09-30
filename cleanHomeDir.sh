@@ -1,35 +1,65 @@
 #!/bin/sh
+DOIT=false
 ROOT_DIR="/tmp"
+MAINGROUP="marcouville"
 OLD_DIR_BASE="$ROOT_DIR/home/.old"
 KEEP_FOLDERS=".evolution .mozilla .thunderbird"
 SKEL_FILES="/etc/skel/.bash_logout /etc/skel/.bashrc /etc/skel/.profile"
-MAINGROUP="marcouville"
+SECONDARY_GROUPS="audio,cdrom,dip,plugdev,fuse,pulse-access,sambashare,x2gouser,x2godesktopsharing"
+
 
 for user in `./userList.sh` ; do
-	echo "Utilisateur : $user"
+  echo ""
+	echo "########################## Utilisateur : $user #########################"
+  echo "Add $user to new primary group and secondary groups : "
+  echo "usermod -g $MAINGROUP -G $SECONDARY_GROUPS $user"
+  if $DOIT ; then
+    usermod -g $MAINGROUP -G $SECONDARY_GROUPS $user
+  fi
+
+
 	old=$OLD_DIR_BASE/$user
-	echo "	old home dir : $old"
+	echo "old home dir : $old"
 	new="$ROOT_DIR/home/$user"
-	echo "	new home dir : $new"
-  echo "  Skel files : "
+	echo "new home dir : $new"
+  if [ ! -e $new ] ; then
+    echo "Create new home dir for user $user : "
+    echo "mkdir $new"
+    echo "chown $user:$MAINGROUP $new"
+    if $DOIT ; then
+      mkdir $new
+      chowm $user:$MAINGROUP $new
+    fi
+  fi
+
+
+
+  echo "Skel files : "
   for f in $SKEL_FILES ; do
-    echo "        Copy $f to $new"
+    echo "Copy $f to $new"
+    echo "cp $f $new"
+    if $DOIT ; then
+      cp $f $new
+    fi
   done
 	for d in $KEEP_FOLDERS ; do
 		if [ -e $old/$d ] ; then
-			echo "		Restoring $d"
+			echo "Restoring $d"
+			echo "cp -Rf $old/$d $new"
+      if $DOIT ; then
+        cp -Rf $old/$d $new
+      fi
 		else
-			echo "		$d is not here !"
+			echo "$d is not here !"
 		fi
 	done
+
+  echo "Restoring $user's DATA"
+  echo "cp -Rf $old/* $new"
+  echo "chown $user:$MAINGROUP $new"
+  if $DOIT ; then
+    cp -Rf $old/* $new
+    chown -R $user:$MAINGROUP $new
+  fi
   
-  id
-
-  su $user -c /bin/sh - << EOF
-  groups
-EOF
-
-
-
-
 done
