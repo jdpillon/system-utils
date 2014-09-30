@@ -55,10 +55,10 @@ for user in `./userList.sh` ; do
 	done
 
   echo "Restoring $user's DATA"
-  echo "cp -Rf $old/* $new"
+  echo "mv $old/* $new"
   echo "chown $user:$MAINGROUP $new"
   if $DOIT ; then
-    cp -Rf $old/* $new
+    mv $old/* $new
     chown -R $user:$MAINGROUP $new
   fi
   
