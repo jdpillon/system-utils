@@ -29,7 +29,7 @@ for user in `./userList.sh` ; do
     echo "chown $user:$MAINGROUP $new"
     if $DOIT ; then
       mkdir $new
-      chowm $user:$MAINGROUP $new
+      chown $user:$MAINGROUP $new
     fi
   fi
 
