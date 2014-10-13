@@ -3,6 +3,7 @@ DOIT=false
 ROOT_DIR="/tmp"
 MAINGROUP="marcouville"
 OLD_DIR_BASE="$ROOT_DIR/home/.old"
+# Evolution is more complicatetd !!! See importEvolution.sh
 KEEP_FOLDERS=".evolution .mozilla .thunderbird"
 SKEL_FILES="/etc/skel/.bash_logout /etc/skel/.bashrc /etc/skel/.profile"
 SECONDARY_GROUPS="audio,cdrom,dip,plugdev,fuse,pulse-access,sambashare,x2gouser,x2godesktopsharing"
