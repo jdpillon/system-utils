@@ -33,5 +33,6 @@ EVOLUTIONDATA=".local/share .gconf/apps .config"
 for path in $EVOLUTIONDATA ; do
   FULLPATH="$OLDPATH/$path/evolution"
   echo "$FULLPATH => $USERPATH/$path"
+  echo "cp -Rfp $FULLPATH $USERPATH/$path"
 done
 
